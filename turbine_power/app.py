@@ -15,7 +15,7 @@ mlflow.set_tracking_uri("http://20.4.198.104:5000")
 
 class InputData(BaseModel):
     wind_speed: List[float] = Field(examples=[[10, 11]])
-    wind_direction: List[float] = Field(examples=[[45, 45]])
+    #wind_direction: List[float] = Field(examples=[[45, 45]])
     is_curtailed: List[float] = Field(examples=[[False, False]])
 
 stage = "production"
@@ -30,12 +30,12 @@ async def root():
 
 @app.post("/predict")
 async def predict(input_data: InputData):
-    data = pd.DataFrame(input_data.dict())
+    data = pd.DataFrame(input_data.model_dump())
     X = data[features]
     
     # Exercise: use the model to make predictions
-    # ...
-    output = pd.Series(["TODO: implement me!"])  # replace this line
+    #print(model.predict(X))
+    output = pd.Series(model.predict(X))  # replace this line
     
     return {"prediction": output.tolist()}
 
